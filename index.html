@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>ناوەندی وەرگرتنی قوتابیان- زانکۆی سۆران - Soran University Panel System</title>
-  <title>ساڵی خوێندنی 2025-2026  - Soran University Panel System</title>
+<title>ناوەندی وەرگرتنی قوتابیان - زانکۆی سۆران - Soran University Panel System</title>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -57,7 +56,6 @@
     padding: 20px;
   }
   
-  /* Background Animation */
   .bg-decoration {
     position: fixed;
     top: 0;
@@ -112,7 +110,6 @@
     }
   }
   
-  /* Header */
   .header {
     position: relative;
     z-index: 10;
@@ -202,7 +199,6 @@
     box-shadow: var(--shadow-md);
   }
   
-  /* Main Container */
   .container {
     position: relative;
     z-index: 10;
@@ -210,7 +206,6 @@
     margin: 0 auto;
   }
   
-  /* Login Screen */
   .login-screen {
     display: flex;
     align-items: center;
@@ -231,16 +226,12 @@
     text-align: center;
   }
   
-
-  
   .login-card h2 {
     font-size: 28px;
     font-weight: 700;
     margin-bottom: 32px;
     color: var(--text-primary);
   }
-  
-
   
   .login-btn {
     background: linear-gradient(135deg, var(--primary-blue), var(--primary-light));
@@ -261,7 +252,6 @@
     box-shadow: var(--shadow-xl);
   }
   
-  /* Dashboard Grid */
   .dashboard {
     display: grid;
     gap: 24px;
@@ -371,7 +361,6 @@
     color: var(--text-muted);
   }
   
-  /* Panel Content */
   .panel-content {
     background: var(--bg-card);
     backdrop-filter: blur(20px);
@@ -416,7 +405,6 @@
     box-shadow: var(--shadow-md);
   }
   
-  /* Animations */
   .fade-in {
     animation: fadeIn 0.5s ease-out;
   }
@@ -432,7 +420,6 @@
     }
   }
   
-  /* Responsive */
   @media (max-width: 768px) {
     .header {
       flex-direction: column;
@@ -463,20 +450,18 @@
 </style>
 </head>
 <body>
-  <!-- Background Animation -->
   <div class="bg-decoration">
     <div class="floating-shape"></div>
     <div class="floating-shape"></div>
     <div class="floating-shape"></div>
   </div>
 
-  <!-- Login Screen -->
   <div id="loginScreen" class="login-screen">
     <div class="login-card fade-in">
       <img src="https://i.imgur.com/qlBzfCs.png" alt="Soran University Logo" style="max-width: 140px; height: auto; margin: 0 auto 24px; display: block; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));">
       <h2 style="font-size: 32px; margin-bottom: 16px;">بەخێربێن بۆ زانکۆی سۆران</h2>
       <p style="font-size: 18px; color: var(--text-secondary); margin-bottom: 32px; line-height: 1.8;">
-        سیستەمی ناوەندی وەرگرتنی قوتابیان لە زانکۆی سۆران
+        سیستەمی ناوەندی وەرگرتنی قوتابیان لە زانکۆی سۆران<br>
         ساڵی خویندنی 2025-2026
       </p>
       <button class="login-btn" id="loginBtn" onclick="login()">
@@ -484,13 +469,12 @@
         چوونە ژوورەوە
       </button>
       <p style="font-size: 14px; color: var(--text-muted); margin-top: 24px;">
+        تاقیکردنەوە: ?role=SYSTEM_ADMIN
       </p>
     </div>
   </div>
 
-  <!-- Main Application -->
   <div id="mainApp" class="hidden">
-    <!-- Header -->
     <header class="header fade-in">
       <div class="header-left">
         <div class="logo-small">
@@ -513,11 +497,8 @@
       </div>
     </header>
 
-    <!-- Container -->
     <div class="container">
-      <!-- Dashboard View -->
       <div id="dashboardView" class="dashboard">
-        <!-- Stats Section -->
         <div class="stats-section fade-in">
           <h3 style="margin-bottom: 16px; font-size: 18px;">ئاماری گشتی - General Statistics</h3>
           <div class="stats-grid">
@@ -540,11 +521,9 @@
           </div>
         </div>
 
-        <!-- Panels Grid -->
         <div class="panels-grid" id="panelsGrid"></div>
       </div>
 
-      <!-- Panel Content View -->
       <div id="panelView" class="hidden">
         <div class="panel-content fade-in">
           <div class="panel-header">
@@ -722,26 +701,49 @@
 
     let currentUser = null;
 
-    // Initialize
     function init() {
-      // App is ready
+      const urlParams = new URLSearchParams(window.location.search);
+      const role = urlParams.get('role');
+      const userName = urlParams.get('name');
+      const userEmail = urlParams.get('email');
+      
+      if (role && USER_ROLES[role]) {
+        currentUser = {
+          name: userName || 'بەکارهێنەر',
+          email: userEmail || '',
+          role: role,
+          ...USER_ROLES[role]
+        };
+        
+        document.getElementById('loginScreen').classList.add('hidden');
+        document.getElementById('mainApp').classList.remove('hidden');
+        
+        document.getElementById('userName').textContent = currentUser.name;
+        document.getElementById('userRole').textContent = currentUser.name;
+        
+        renderDashboard();
+        
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
     }
 
-    // Login - Redirect to Google Apps Script for authentication
     function login() {
-      // Redirect to your Google Apps Script authentication URL
-      window.location.href = 'https://script.google.com/macros/s/AKfycbxV1TrpaAllTnCwYWagGNzvHHcmwOtIVYL5-qXS-_NUV1DIWO3PMmC9Tvtvayqj6cLW/exec';
+      const returnUrl = encodeURIComponent(window.location.href);
+      window.location.href = `https://script.google.com/macros/s/AKfycbxV1TrpaAllTnCwYWagGNzvHHcmwOtIVYL5-qXS-_NUV1DIWO3PMmC9Tvtvayqj6cLW/exec?returnUrl=${returnUrl}`;
     }
 
-    // Logout
     function logout() {
       currentUser = null;
       document.getElementById('mainApp').classList.add('hidden');
       document.getElementById('loginScreen').classList.remove('hidden');
     }
 
-    // Render dashboard
     function renderDashboard() {
+      if (!currentUser) {
+        console.error('No user logged in');
+        return;
+      }
+      
       const container = document.getElementById('panelsGrid');
       container.innerHTML = '';
       
@@ -763,7 +765,6 @@
       });
     }
 
-    // Open panel
     function openPanel(panelKey) {
       const panel = PANELS[panelKey];
       if (!panel) return;
@@ -789,13 +790,11 @@
       `;
     }
 
-    // Show dashboard
     function showDashboard() {
       document.getElementById('panelView').classList.add('hidden');
       document.getElementById('dashboardView').classList.remove('hidden');
     }
 
-    // Initialize on load
     init();
   </script>
 </body>
