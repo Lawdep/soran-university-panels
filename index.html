@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>سیستەمی پانێڵەکانی زانکۆی سۆران - Soran University Panel System</title>
+<title>ناوەندی وەرگرتنی قوتابیان- زانکۆی سۆران - Soran University Panel System</title>
+  <title>ساڵی خوێندنی 2025-2026  - Soran University Panel System</title>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -230,19 +231,7 @@
     text-align: center;
   }
   
-  .login-logo {
-    width: 100px;
-    height: 100px;
-    background: linear-gradient(135deg, var(--primary-blue), var(--primary-light));
-    border-radius: 50%;
-    margin: 0 auto 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 48px;
-    color: white;
-    box-shadow: var(--shadow-xl);
-  }
+
   
   .login-card h2 {
     font-size: 28px;
@@ -251,37 +240,7 @@
     color: var(--text-primary);
   }
   
-  .role-selector {
-    display: grid;
-    gap: 12px;
-    margin-bottom: 24px;
-  }
-  
-  .role-option {
-    background: linear-gradient(135deg, #f8fafc, #f1f5f9);
-    border: 2px solid transparent;
-    border-radius: var(--radius-lg);
-    padding: 16px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-align: right;
-  }
-  
-  .role-option:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-  }
-  
-  .role-option.selected {
-    border-color: var(--primary-blue);
-    background: linear-gradient(135deg, #dbeafe, #bfdbfe);
-  }
-  
-  .role-name {
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--text-primary);
-  }
+
   
   .login-btn {
     background: linear-gradient(135deg, var(--primary-blue), var(--primary-light));
@@ -300,11 +259,6 @@
   .login-btn:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-xl);
-  }
-  
-  .login-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
   }
   
   /* Dashboard Grid */
@@ -519,15 +473,18 @@
   <!-- Login Screen -->
   <div id="loginScreen" class="login-screen">
     <div class="login-card fade-in">
-      <div class="login-logo">
-        <i class="fas fa-graduation-cap"></i>
-      </div>
-      <h2>هەڵبژاردنی ڕۆڵ - Select Role</h2>
-      <div class="role-selector" id="roleSelector"></div>
-      <button class="login-btn" id="loginBtn" disabled onclick="login()">
+      <img src="https://i.imgur.com/qlBzfCs.png" alt="Soran University Logo" style="max-width: 140px; height: auto; margin: 0 auto 24px; display: block; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));">
+      <h2 style="font-size: 32px; margin-bottom: 16px;">بەخێربێن بۆ زانکۆی سۆران</h2>
+      <p style="font-size: 18px; color: var(--text-secondary); margin-bottom: 32px; line-height: 1.8;">
+        سیستەمی ناوەندی بۆ بەڕێوەبردنی کاروباری زانکۆ
+      </p>
+      <button class="login-btn" id="loginBtn" onclick="login()">
         <i class="fas fa-sign-in-alt"></i>
-        چوونە ژوورەوە - Login
+        چوونە ژوورەوە
       </button>
+      <p style="font-size: 14px; color: var(--text-muted); margin-top: 24px;">
+        تکایە بە ئیمەیڵی زانکۆیی خۆت بچۆ ژوورەوە
+      </p>
     </div>
   </div>
 
@@ -764,69 +721,23 @@
     };
 
     let currentUser = null;
-    let selectedRole = null;
 
     // Initialize
     function init() {
-      renderRoleSelector();
+      // App is ready
     }
 
-    // Render role selector
-    function renderRoleSelector() {
-      const container = document.getElementById('roleSelector');
-      container.innerHTML = '';
-      
-      Object.keys(USER_ROLES).forEach(roleKey => {
-        const role = USER_ROLES[roleKey];
-        const div = document.createElement('div');
-        div.className = 'role-option';
-        div.innerHTML = `
-          <div class="role-name">${role.name} - ${role.nameEn}</div>
-        `;
-        div.onclick = () => selectRole(roleKey);
-        container.appendChild(div);
-      });
-    }
-
-    // Select role
-    function selectRole(roleKey) {
-      selectedRole = roleKey;
-      document.querySelectorAll('.role-option').forEach(el => {
-        el.classList.remove('selected');
-      });
-      event.target.closest('.role-option').classList.add('selected');
-      document.getElementById('loginBtn').disabled = false;
-    }
-
-    // Login
+    // Login - Redirect to Google Apps Script for authentication
     function login() {
-      if (!selectedRole) return;
-      
-      currentUser = {
-        role: selectedRole,
-        name: 'کاربەر - User',
-        ...USER_ROLES[selectedRole]
-      };
-      
-      document.getElementById('loginScreen').classList.add('hidden');
-      document.getElementById('mainApp').classList.remove('hidden');
-      
-      document.getElementById('userName').textContent = currentUser.name;
-      document.getElementById('userRole').textContent = `${currentUser.name} - ${currentUser.nameEn}`;
-      
-      renderDashboard();
+      // Redirect to your Google Apps Script authentication URL
+      window.location.href = 'https://script.google.com/a/macros/soran.edu.iq/s/AKfycbybkBgKnhJKrw26GreAEiv5Ye_HnkI_pQxX2XCVM1NiokBluc55KVA1J2Vx5gO5JhyOJw/exec';
     }
 
     // Logout
     function logout() {
       currentUser = null;
-      selectedRole = null;
       document.getElementById('mainApp').classList.add('hidden');
       document.getElementById('loginScreen').classList.remove('hidden');
-      document.getElementById('loginBtn').disabled = true;
-      document.querySelectorAll('.role-option').forEach(el => {
-        el.classList.remove('selected');
-      });
     }
 
     // Render dashboard
